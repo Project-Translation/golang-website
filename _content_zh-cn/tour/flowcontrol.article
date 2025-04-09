@@ -1,0 +1,161 @@
+流程控制语句：for、if、else、switch 和 defer
+了解如何使用条件语句、循环、switch 和 defer 来控制代码的流程。
+
+Go 作者
+https://golang.org
+
+* For
+
+Go 只有一个循环结构，即 `for` 循环。
+
+基本的 `for` 循环有三个由分号分隔的组成部分：
+
+- 初始化语句：在第一次迭代前执行
+- 条件表达式：在每次迭代前评估
+- 后置语句：在每次迭代结束时执行
+
+初始化语句通常是一个简短的变量声明，并且在 `for` 语句的作用域内可见。
+
+一旦布尔条件评估为 `false`，循环将停止迭代。
+
+*注意：* 与 C、Java 或 JavaScript 等其他语言不同，`for` 语句的三个组成部分不需要括号包围，并且大括号 `{ }` 始终是必需的。
+
+.play flowcontrol/for.go
+
+* For 继续
+
+初始化和后置语句是可选的。
+
+.play flowcontrol/for-continued.go
+
+* For 是 Go 的 "while"
+
+此时您可以省略分号：C 的 `while` 在 Go 中写作 `for`。
+
+.play flowcontrol/for-is-gos-while.go
+
+* 永久循环
+
+如果省略循环条件，它将永远循环，因此无限循环可以简洁地表达。
+
+.play flowcontrol/forever.go
+
+* If
+
+Go 的 `if` 语句类似于它的 `for` 循环；表达式不需要括号 `()` 包围，但大括号 `{ }` 是必需的。
+
+.play flowcontrol/if.go
+
+* If 带有简短语句
+
+像 `for` 一样，`if` 语句可以以一个简短语句开始，在条件之前执行。
+
+由该语句声明的变量仅在 `if` 结束之前的作用域内有效。
+
+（尝试在最后的 `return` 语句中使用 `v`。）
+
+.play flowcontrol/if-with-a-short-statement.go
+
+* If 和 else
+
+在 `if` 简短语句中声明的变量在任何 `else` 块中也可用。
+
+（`pow` 的两次调用在 `main` 中的 `fmt.Println` 调用开始之前返回结果。）
+
+.play flowcontrol/if-and-else.go
+
+* 练习：循环和函数
+
+为了玩转函数和循环，我们来实现一个平方根函数：给定一个数 x，我们希望找到一个数 z，使得 z² 最接近 x。
+
+计算机通常使用循环来计算 x 的平方根。
+从某个猜测值 z 开始，我们可以根据 z² 与 x 的接近程度来调整 z，从而产生更好的猜测：
+
+	z -= (z*z - x) / (2*z)
+
+重复此调整会使猜测越来越好，
+直到我们达到一个尽可能接近实际平方根的答案。
+
+在提供的 `func Sqrt` 中实现这一点。
+对于 z 的一个不错的起始猜测是 1，无论输入是什么。
+首先，重复计算 10 次，并在途中打印每个 z。
+看看对于各种 x 的值（1, 2, 3, ...）你能得到多接近答案，
+以及猜测的改进速度如何。
+
+提示：要声明并初始化一个浮点值，
+给它浮点语法或使用转换：
+
+	z := 1.0
+	z := float64(1)
+
+接下来，将循环条件更改为在值停止变化（或仅变化非常小的量）时停止。
+看看这是否比 10 次迭代更多或更少。
+尝试其他对 z 的初始猜测，如 x，或 x/2。
+您的函数结果与标准库中的 [[/pkg/math/#Sqrt][math.Sqrt]] 有多接近？
+
+(*注意：* 如果您对算法的细节感兴趣，上面的 z² − x 是 z² 与它需要的位置（x）的距离，而除以 2z 是 z² 的导数，
+以根据 z² 变化的速度来调整 z 的量。
+这种一般方法称为 [[https://en.wikipedia.org/wiki/Newton%27s_method][牛顿法]]。
+它对许多函数都适用，但对平方根特别有效。）
+
+.play flowcontrol/exercise-loops-and-functions.go
+
+* Switch
+
+`switch` 语句是编写一系列 `if`-`else` 语句的简短方式。
+它运行第一个与条件表达式值相等的 case。
+
+Go 的 switch 类似于 C、C++、Java、JavaScript 和 PHP 中的 switch，
+但 Go 只运行选定的 case，而不是所有后续的 case。
+实际上，在这些语言中每个 case 末尾需要的 `break` 语句在 Go 中自动提供。
+另一个重要的区别是 Go 的 switch case 不必是常量，并且涉及的值不必是整数。
+
+.play flowcontrol/switch.go
+
+* Switch 评估顺序
+
+Switch case 从上到下评估 case，成功时停止。
+
+（例如，
+
+	switch i {
+	case 0:
+	case f():
+	}
+
+如果 `i==0`，则不会调用 `f`。）
+
+#appengine: *注意：* Go 游乐场中的时间总是看起来从
+#appengine: 2009-11-10 23:00:00 UTC 开始，其意义留作读者练习。
+
+.play flowcontrol/switch-evaluation-order.go
+* 无条件的 switch
+
+无条件的 switch 等同于 `switch`true`。
+
+这种结构可以用来清洁地编写长长的 if-then-else 链。
+
+.play flowcontrol/switch-with-no-condition.go
+
+* Defer
+
+defer 语句会推迟函数的执行，直到周围的函数返回。
+
+延迟调用的参数会立即被求值，但函数调用本身会在周围的函数返回时才执行。
+
+.play flowcontrol/defer.go
+
+* 堆叠 defer
+
+延迟的函数调用会被压入一个栈中。当一个函数返回时，其延迟调用会以最后进先出的顺序执行。
+
+要了解更多关于 defer 语句的信息，请阅读这篇
+[[/blog/defer-panic-and-recover][博客文章]]。
+
+.play flowcontrol/defer-multi.go
+
+* 祝贺你！
+
+你完成了本课！
+
+你可以返回到 [[/tour/list][模块]]列表中，找到接下来要学习的内容，或者继续进行 [[javascript:click('.next-page')][下一课]]。

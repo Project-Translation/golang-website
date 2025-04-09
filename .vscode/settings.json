@@ -1,0 +1,47 @@
+{
+    "projectTranslator.currentVendor": "grok",
+    "projectTranslator.vendors": [
+        {
+            "name": "grok",
+            "apiEndpoint": "https://api.x.ai/v1",
+            "apiKeyEnvVarName": "GROK_API_KEY",
+            "model": "grok-2",
+            "rpm": 20,
+            "maxTokensPerSegment": 1500,
+            "timeout": 30,
+            "temperature": 0,
+            "streamMode": true
+        }
+    ],
+    "projectTranslator.specifiedFiles": [
+        {
+            "sourceFile": {
+                "path": "README.md",
+                "lang": "en-us"
+            },
+            "destFiles": [
+                {
+                    "path": "README.zh-CN.md",
+                    "lang": "zh-cn"
+                }
+            ]
+        }
+    ],
+    "projectTranslator.ignoreTranslationExtensions": [
+        ".go"
+    ],
+    "projectTranslator.specifiedFolders": [
+        {
+            "sourceFolder": {
+                "path": "_content/tour",
+                "lang": "en-us"
+            },
+            "destFolders": [
+                {
+                    "path": "_content_zh-cn/tour",
+                    "lang": "zh-cn"
+                }
+            ]
+        }
+    ]
+}

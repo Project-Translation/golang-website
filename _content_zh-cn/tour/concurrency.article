@@ -1,0 +1,201 @@
+并发
+Go 语言在核心语言中提供了并发构造。本课将介绍它们并给出一些使用示例。
+
+Go 作者
+https://golang.org
+
+* 协程
+
+_协程_ 是由 Go 运行时管理的轻量级线程。
+
+	go f(x, y, z)
+
+启动一个新的协程运行
+
+	f(x, y, z)
+
+`f`、`x`、`y` 和 `z` 的评估在当前协程中进行，而 `f` 的执行在新协程中进行。
+
+协程在同一地址空间中运行，因此必须同步对共享内存的访问。[[/pkg/sync/][`sync`]] 包提供了有用的原语，尽管在 Go 中你不会经常需要它们，因为还有其他原语。（参见下一张幻灯片。）
+
+.play concurrency/goroutines.go
+
+* 通道
+
+通道是一种类型化的导管，通过它可以使用通道操作符 `<-` 发送和接收值。
+
+	ch <- v    // 将 v 发送到通道 ch。
+	v := <-ch  // 从 ch 接收，并
+	           // 将值赋给 v。
+
+（数据流向箭头的方向。）
+
+像地图和切片一样，通道在使用前必须创建：
+
+	ch := make(chan int)
+
+默认情况下，发送和接收会阻塞，直到另一方准备好。这允许协程在没有显式锁或条件变量的情况下同步。
+
+示例代码将切片中的数字相加，在两个协程之间分配工作。
+一旦两个协程完成计算，它就会计算最终结果。
+
+.play concurrency/channels.go
+
+* 带缓冲的通道
+
+通道可以是_带缓冲的_。在 `make` 的第二个参数中提供缓冲长度来初始化带缓冲的通道：
+
+	ch := make(chan int, 100)
+
+发送到带缓冲的通道仅在缓冲区满时阻塞。接收在缓冲区为空时阻塞。
+
+修改示例以过度填充缓冲区，看看会发生什么。
+
+.play concurrency/buffered-channels.go
+
+* 范围和关闭
+
+发送者可以 `close` 一个通道以表示不会再发送更多值。接收者可以通过在接收表达式中分配第二个参数来测试通道是否已关闭：在
+
+	v, ok := <-ch
+
+之后，如果没有更多值可接收且通道已关闭，则 `ok` 为 `false`。
+
+循环 `for`i`:=`range`c` 会从通道中重复接收值，直到它被关闭。
+
+*注意：* 只有发送者应该关闭通道，接收者永远不应该关闭。向已关闭的通道发送会导致恐慌。
+
+*另一个注意：* 通道不像文件；你通常不需要关闭它们。只有在接收者必须被告知不会再有值到来时才需要关闭，例如终止 `range` 循环。
+
+.play concurrency/range-and-close.go
+
+* 选择
+
+`select` 语句允许一个协程等待多个通信操作。
+
+`select` 会阻塞，直到它的一个 case 可以运行，然后它执行那个 case。如果多个 case 准备好，它会随机选择一个。
+
+.play concurrency/select.go
+
+* 默认选择
+
+`select` 中的 `default` case 在没有其他 case 准备好时运行。
+
+使用 `default` case 尝试发送或接收而不阻塞：
+
+	select {
+	case i := <-c:
+		// 使用 i
+	default:
+		// 从 c 接收会阻塞
+	}
+
+.play concurrency/default-selection.go
+
+* 练习：等价二叉树
+
+可以有许多不同的二叉树存储相同的序列值。例如，这里有两个存储序列 1, 1, 2, 3, 5, 8, 13 的二叉树。
+
+.image /tour/static/img/tree.png
+
+在大多数语言中，检查两个二叉树是否存储相同序列的函数相当复杂。我们将使用 Go 的并发和通道编写一个简单的解决方案。
+
+此示例使用 `tree` 包，它定义了类型：
+
+	type Tree struct {
+		Left  *Tree
+		Value int
+		Right *Tree
+	}
+
+
+继续描述在 [[javascript:click('.next-page')][下一页]]。
+
+* 练习：等价二叉树
+
+*1.* 实现 `Walk` 函数。
+
+*2.* 测试 `Walk` 函数。
+
+函数 `tree.New(k)` 构造一个随机结构（但总是排序的）二叉树，持有值 `k`, `2k`, `3k`, ..., `10k`。
+
+创建一个新通道 `ch` 并启动行走器：
+
+	go Walk(tree.New(1), ch)
+
+然后从通道中读取并打印 10 个值。它们应该是数字 1, 2, 3, ..., 10。
+
+*3.* 使用 `Walk` 实现 `Same` 函数，以确定 `t1` 和 `t2` 是否存储相同的值。
+
+*4.* 测试 `Same` 函数。
+
+`Same(tree.New(1),`tree.New(1))` 应返回 true，而 `Same(tree.New(1),`tree.New(2))` 应返回 false。
+
+`Tree` 的文档可以在 [[https://godoc.org/golang.org/x/tour/tree#Tree][这里]] 找到。
+
+.play concurrency/exercise-equivalent-binary-trees.go
+
+* sync.Mutex
+
+我们已经看到通道在协程之间的通信中非常出色。
+但如果我们不需要通信呢？如果我们只是想确保一次只有一个 goroutine 可以访问一个变量以避免冲突呢？
+
+这个概念被称为_互斥_，提供这种功能的数据结构的常规名称是_互斥锁_。
+
+Go 的标准库通过 [[/pkg/sync/#Mutex][`sync.Mutex`]] 及其两个方法提供了互斥功能：
+
+- `Lock`
+- `Unlock`
+
+我们可以通过在 `Inc` 方法中展示的那样，用 `Lock` 和 `Unlock` 调用来定义一个代码块，以互斥方式执行。
+
+我们还可以使用 `defer` 来确保互斥锁将被解锁，如 `Value` 方法中所示。
+
+.play concurrency/mutex-counter.go
+
+* 练习：网络爬虫
+
+在这个练习中，你将使用 Go 的并发特性来并行化一个网络爬虫。
+
+修改 `Crawl` 函数以并行获取 URL，同时避免重复获取同一个 URL。
+
+_提示_：你可以使用一个 map 来缓存已获取的 URL，但仅使用 map 并不能保证并发安全！
+
+.play concurrency/exercise-web-crawler.go
+
+* 从这里开始...
+
+#appengine: 你可以通过
+#appengine: [[/doc/install/][安装 Go]] 来开始。
+
+#appengine: 一旦你安装了 Go，
+[[/doc/][Go 文档]] 是一个很好的地方来
+#appengine: 继续。
+开始。
+它包含了参考资料、教程、视频等。
+
+要了解如何组织和处理 Go 代码，请阅读 [[/doc/code][如何编写 Go 代码]]。
+
+如果你需要标准库的帮助，请查看 [[/pkg/][包参考]]。对于语言本身的帮助，你可能会惊讶地发现 [[/ref/spec][语言规范]] 相当易读。
+
+要进一步探索 Go 的并发模型，请观看
+[[https://www.youtube.com/watch?v=f6kdp27TYZs][Go 并发模式]]
+([[/talks/2012/concurrency.slide][幻灯片]])
+和
+[[https://www.youtube.com/watch?v=QDDwwePbDtw][高级 Go 并发模式]]
+([[/talks/2013/advconc.slide][幻灯片]])
+并阅读
+[[/doc/codewalk/sharemem/][通过通信共享内存]]
+代码演练。
+
+要开始编写 Web 应用程序，请观看
+[[https://vimeo.com/53221558][一个简单的编程环境]]
+([[/talks/2012/simple.slide][幻灯片]])
+并阅读
+[[/doc/articles/wiki/][编写 Web 应用程序]] 教程。
+
+[[/doc/codewalk/functions/][Go 中的一等函数]] 代码演练提供了一个关于 Go 函数类型的有趣视角。
+
+[[/blog/][Go 博客]] 有一个大量的 Go 文章存档。
+
+访问 [[/][Go 主页]] 了解更多。

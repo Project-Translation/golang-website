@@ -1,0 +1,19 @@
+# CodeMirror
+[![构建状态](https://travis-ci.org/codemirror/CodeMirror.svg)](https://travis-ci.org/codemirror/CodeMirror)
+[![NPM 版本](https://img.shields.io/npm/v/codemirror.svg)](https://www.npmjs.org/package/codemirror)
+[![加入聊天室 https://gitter.im/codemirror/CodeMirror](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/codemirror/CodeMirror)  
+[资金状态: ![维护者满意度](https://marijnhaverbeke.nl/fund/status_s.png?again)](https://marijnhaverbeke.nl/fund/)
+
+CodeMirror 是一个多功能的文本编辑器，使用 JavaScript 实现，适用于浏览器。它专门用于编辑代码，提供超过 100 种语言模式和各种插件，实现更高级的编辑功能。
+
+提供丰富的编程 API 和 CSS 主题系统，可根据您的应用程序定制 CodeMirror，并扩展其新功能。
+
+您可以在[项目页面](http://codemirror.net)上找到更多信息（以及[手册](http://codemirror.net/doc/manual.html)）。有关问题和讨论，请使用[讨论论坛](https://discuss.codemirror.net/)。
+
+请参阅[CONTRIBUTING.md](https://github.com/codemirror/CodeMirror/blob/master/CONTRIBUTING.md)了解贡献指南。
+
+CodeMirror 社区致力于对每个人都友好。我们使用[贡献者契约 (1.1)](http://contributor-covenant.org/version/1/1/0/)作为我们的行为准则。
+
+### 快速入门
+
+要构建项目，请确保已安装 Node.js（至少版本 6），然后执行 `npm install`。要运行，只需在浏览器中打开 `index.html`（无需运行 Web 服务器）。使用 `npm test` 运行测试。

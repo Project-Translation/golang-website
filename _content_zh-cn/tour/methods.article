@@ -1,0 +1,293 @@
+方法和接口
+本课涵盖方法和接口，这些构造定义了对象及其行为。
+
+Go 作者
+https://golang.org
+
+* 方法
+
+Go 没有类。
+但是，您可以在类型上定义方法。
+
+方法是一个带有特殊 _接收者_ 参数的函数。
+
+接收者出现在其自己的参数列表中，位于 `func` 关键字和方法名称之间。
+
+在这个例子中，`Abs` 方法的接收者类型为 `Vertex`，名称为 `v`。
+
+.play methods/methods.go
+
+* 方法是函数
+
+记住：方法只是带有接收者参数的函数。
+
+这里是 `Abs` 作为常规函数编写的，没有功能上的变化。
+
+.play methods/methods-funcs.go
+
+* 方法继续
+
+您也可以在非结构体类型上声明方法。
+
+在这个例子中，我们看到一个数值类型 `MyFloat` 带有一个 `Abs` 方法。
+
+您只能声明接收者类型在与方法相同的包中定义的方法。
+您不能声明接收者类型在另一个包中定义的方法（包括内置类型如 `int`）。
+
+.play methods/methods-continued.go
+
+* 指针接收者
+
+您可以声明带有指针接收者的方法。
+
+这意味着接收者类型具有某种类型 `T` 的字面语法 `*T`。
+（此外，`T` 本身不能是指针，如 `*int`。）
+
+例如，这里定义在 `*Vertex` 上的 `Scale` 方法。
+
+带有指针接收者的方法可以修改接收者指向的值（如这里的 `Scale` 所做）。
+由于方法通常需要修改其接收者，指针接收者比值接收者更常见。
+
+尝试从第 16 行的 `Scale` 函数声明中删除 `*`，并观察程序行为的变化。
+
+使用值接收者，`Scale` 方法在原始 `Vertex` 值的副本上操作。
+（这与任何其他函数参数的行为相同。）
+`Scale` 方法必须具有指针接收者才能更改 `main` 函数中声明的 `Vertex` 值。
+
+.play methods/methods-pointers.go
+
+* 指针和函数
+
+在这里我们看到 `Abs` 和 `Scale` 方法被重写为函数。
+
+再次尝试从第 16 行删除 `*`。
+您能看出行为为什么会变化吗？
+为了使示例能够编译，您还需要更改什么？
+
+（如果您不确定，请继续下一页。）
+
+.play methods/methods-pointers-explained.go
+
+* 方法和指针间接引用
+
+比较前两个程序，您可能会注意到带有指针参数的函数必须接受指针：
+
+	var v Vertex
+	ScaleFunc(v, 5)  // 编译错误！
+	ScaleFunc(&v, 5) // OK
+
+而带有指针接收者的方法在调用时可以接受值或指针作为接收者：
+
+	var v Vertex
+	v.Scale(5)  // OK
+	p := &v
+	p.Scale(10) // OK
+
+对于语句 `v.Scale(5)`，即使 `v` 是一个值而不是指针，指针接收者的方法也会被自动调用。
+也就是说，作为一种便利，Go 将语句 `v.Scale(5)` 解释为 `(&v).Scale(5)`，因为 `Scale` 方法具有指针接收者。
+
+.play methods/indirection.go
+
+* 方法和指针间接引用（2）
+
+相反方向也发生同样的事情。
+
+带有值参数的函数必须接受该特定类型的值：
+
+	var v Vertex
+	fmt.Println(AbsFunc(v))  // OK
+	fmt.Println(AbsFunc(&v)) // 编译错误！
+
+而带有值接收者的方法在调用时可以接受值或指针作为接收者：
+
+	var v Vertex
+	fmt.Println(v.Abs()) // OK
+	p := &v
+	fmt.Println(p.Abs()) // OK
+
+在这种情况下，方法调用 `p.Abs()` 被解释为 `(*p).Abs()`。
+
+.play methods/indirection-values.go
+
+* 选择值接收者或指针接收者
+
+使用指针接收者的两个原因。
+
+第一个是让方法可以修改其接收者指向的值。
+
+第二个是避免在每次方法调用时复制值。
+如果接收者是一个大型结构体，这可能会更有效。
+
+在这个例子中，`Scale` 和 `Abs` 都是接收者类型为 `*Vertex` 的方法，
+即使 `Abs` 方法不需要修改其接收者。
+
+一般来说，给定类型的所有方法应该具有值接收者或指针接收者，但不能混合使用两者。
+（我们将在接下来的几页中看到原因。）
+
+.play methods/methods-with-pointer-receivers.go
+
+* 接口
+
+_interface_type_ 被定义为一组方法签名。
+
+接口类型的值可以持有实现这些方法的任何值。
+
+*注意：* 示例代码第 22 行有一个错误。
+`Vertex`（值类型）没有实现 `Abser`，因为
+`Abs` 方法仅在 `*Vertex`（指针类型）上定义。
+
+.play methods/interfaces.go
+
+* 接口是隐式实现的
+
+类型通过实现其方法来实现接口。
+没有明确的意图声明，没有 "implements" 关键字。
+隐式接口将接口的定义与其实现分离，后者可以在任何包中出现，无需预先安排。
+
+.play methods/interfaces-are-satisfied-implicitly.go
+
+* 接口值
+
+在底层，接口值可以被认为是一个值和一个具体类型的元组：
+
+	(值, 类型)
+
+接口值持有一个特定底层具体类型的值。
+
+在接口值上调用方法会执行其底层类型上同名的方法。
+
+.play methods/interface-values.go
+
+* 具有 nil 底层值的接口值
+
+如果接口内部的具体值是 nil，
+则方法将使用 nil 接收者调用。
+
+在某些语言中这会触发空指针异常，
+但在 Go 中，编写方法以优雅地处理使用 nil 接收者调用的情况是很常见的（如本例中的方法 `M`）。
+
+请注意，持有 nil 具体值的接口值本身不是 nil。
+
+.play methods/interface-values-with-nil.go
+
+* nil 接口值
+
+nil 接口值既不持有值也不持有具体类型。
+
+在 nil 接口上调用方法是运行时错误，因为接口元组内部没有类型来指示调用哪个具体方法。
+
+.play methods/nil-interface-values.go
+
+* 空接口
+
+指定零方法的接口类型被称为 _空接口_：
+
+	interface{}
+
+空接口可以持有任何类型的值。
+（每个类型至少实现零个方法。）
+
+空接口被用于处理未知类型值的代码。
+例如，`fmt.Print` 接受任意数量的 `interface{}` 类型的参数。
+
+.play methods/empty-interface.go
+
+* 类型断言
+
+_类型断言_ 提供了访问接口值底层具体值的途径。
+
+	t := i.(T)
+
+此语句断言接口值 `i` 持有具体类型 `T`，
+并将底层的 `T` 值赋给变量 `t`。
+
+如果 `i` 不持有 `T`，该语句将触发恐慌。
+
+要_测试_接口值是否持有特定类型，
+类型断言可以返回两个值：底层值
+和一个布尔值，报告断言是否成功。
+
+	t, ok := i.(T)
+
+如果 `i` 持有 `T`，则 `t` 将是底层值，`ok` 将为 true。
+
+如果不是，`ok` 将为 false，`t` 将是类型 `T` 的零值，
+并且不会发生恐慌。
+
+请注意此语法与从映射中读取的语法之间的相似性。
+
+.play methods/type-assertions.go
+
+* 类型开关
+
+_类型开关_ 是一种允许连续进行多个类型断言的构造。
+
+类型开关类似于常规的 switch 语句，但类型开关中的 case 指定类型（而不是值），
+这些值与给定接口值所持有的值的类型进行比较。
+
+	switch v := i.(type) {
+	case T:
+		// 此处 v 的类型为 T
+	case S:
+		// 此处 v 的类型为 S
+	default:
+		// 无匹配；此处 v 的类型与 i 相同
+	}
+
+类型开关中的声明与类型断言 `i.(T)` 的语法相同，
+但具体类型 `T` 被关键字 `type` 替换。
+
+此 switch 语句测试接口值 `i` 是否持有类型 `T` 或 `S` 的值。
+在 `T` 和 `S` 的情况下，变量 `v` 将分别是类型 `T` 或 `S`，
+并持有 `i` 所持有的值。
+在默认情况下（没有匹配时），变量 `v` 是与 `i` 相同接口类型和值。
+
+.play methods/type-switches.go
+
+* 字符串器
+
+最常见的接口之一是由 [[/pkg/fmt/][`fmt`]] 包定义的 [[/pkg/fmt/#Stringer][`Stringer`]]。
+
+	type Stringer interface {
+		String() string
+	}
+
+`Stringer` 是一种可以将自身描述为字符串的类型。`fmt` 包（以及许多其他包）会寻找此接口来打印值。
+
+.play methods/stringer.go
+
+* 练习：字符串器
+
+使 `IPAddr` 类型实现 `fmt.Stringer` 以打印地址为点分十进制格式。
+
+例如，`IPAddr{1,2,3,4}` 应打印为 `"1.2.3.4"`。
+
+.play methods/exercise-stringer.go
+
+* 错误
+
+Go 程序使用 `error` 值来表达错误状态。
+
+`error` 类型是一个类似于 `fmt.Stringer` 的内置接口：
+
+	type error interface {
+		Error() string
+	}
+
+（与 `fmt.Stringer` 一样，`fmt` 包在打印值时会寻找 `error` 接口。）
+
+函数通常返回一个 `error` 值，调用代码应通过测试错误是否等于 `nil` 来处理错误。
+
+	i, err := strconv.Atoi("42")
+	if err != nil {
+		fmt.Printf("无法转换数字: %v\n", err)
+		return
+	}
+	fmt.Println("转换后的整数:", i)
+
+nil `error` 表示成功；非 nil `error` 表示失败。
+
+.play methods/errors.go
+
+* 练习：错误
+727d2eb8-8683-42bd

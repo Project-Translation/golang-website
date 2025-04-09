@@ -1,0 +1,214 @@
+{
+  "README.md": {
+    "timestamp": 1744104373463,
+    "hash": "a043151535c16422934ea2a5bc6d665b"
+  },
+  "_content/tour/basics/basic-types.go": {
+    "timestamp": 1744119806882,
+    "hash": "502bf02d2dbdccc23a31b566594cf5bd"
+  },
+  "_content/tour/basics/constants.go": {
+    "timestamp": 1744119810616,
+    "hash": "273c8fd6263a619dd7a563a87359b342"
+  },
+  "_content/tour/basics/exported-names.go": {
+    "timestamp": 1744119813450,
+    "hash": "d29c7bbd8baf868914b6ce664910b2d6"
+  },
+  "_content/tour/basics/functions-continued.go": {
+    "timestamp": 1744119817179,
+    "hash": "a19792bddf76f30fcf84d4caf5c5ee7b"
+  },
+  "_content/tour/basics/functions.go": {
+    "timestamp": 1744119820269,
+    "hash": "cd44022730e6fc6426ec034a56021ca9"
+  },
+  "_content/tour/basics/imports.go": {
+    "timestamp": 1744119823994,
+    "hash": "0c82b9e625839a2663c3dbb5b5190661"
+  },
+  "_content/tour/basics/multiple-results.go": {
+    "timestamp": 1744119827492,
+    "hash": "ad882d3739f63151193bc30dfb36be1e"
+  },
+  "_content/tour/basics/named-results.go": {
+    "timestamp": 1744119830631,
+    "hash": "e9c47e85be7afd108f3fa742de5d2e05"
+  },
+  "_content/tour/basics/numeric-constants.go": {
+    "timestamp": 1744119834246,
+    "hash": "e66840f948799abfc3be61baccb63bb7"
+  },
+  "_content/tour/basics/packages.go": {
+    "timestamp": 1744119837562,
+    "hash": "b7ecad551a22ff311f788e4796c3c9f3"
+  },
+  "_content/tour/basics/short-variable-declarations.go": {
+    "timestamp": 1744119841115,
+    "hash": "7b4ac5bcfefacd0cb887c8134a753ef7"
+  },
+  "_content/tour/basics/type-conversions.go": {
+    "timestamp": 1744119843897,
+    "hash": "cb624e065ed5c6cfb77c5c899d4e740e"
+  },
+  "_content/tour/basics/type-inference.go": {
+    "timestamp": 1744119847483,
+    "hash": "0d5884d2f9dae6d94d5eb85436cd5a73"
+  },
+  "_content/tour/basics/variables-with-initializers.go": {
+    "timestamp": 1744119850613,
+    "hash": "d5e43ee0af3858f015fa2d1f8dcf249f"
+  },
+  "_content/tour/basics/variables.go": {
+    "timestamp": 1744119854723,
+    "hash": "ceb172754dd70bd32e3d943fec184c6a"
+  },
+  "_content/tour/basics/zero.go": {
+    "timestamp": 1744119860048,
+    "hash": "bb857d14d3e3302d61d41f597d2747aa"
+  },
+  "_content/tour/basics.article": {
+    "timestamp": 1744119887262,
+    "hash": "145c6d9492e349be66740fd5bb7dd7f7"
+  },
+  "_content/tour/concurrency/buffered-channels.go": {
+    "timestamp": 1744119888474,
+    "hash": "b03cda52126854ac35d650b23410402c"
+  },
+  "_content/tour/concurrency/channels.go": {
+    "timestamp": 1744119891771,
+    "hash": "65d572c8f1eed6181d04bdb1b4691218"
+  },
+  "_content/tour/concurrency/default-selection.go": {
+    "timestamp": 1744119894860,
+    "hash": "25aae2f993ecec4ba5ea14fc2e241705"
+  },
+  "_content/tour/concurrency/exercise-equivalent-binary-trees.go": {
+    "timestamp": 1744119898642,
+    "hash": "8848a15c3168922a23e429c579f31be8"
+  },
+  "_content/tour/concurrency/exercise-web-crawler.go": {
+    "timestamp": 1744119912139,
+    "hash": "e1c697a9ec4a7b7f0cf932bda054e03e"
+  },
+  "_content/tour/concurrency/goroutines.go": {
+    "timestamp": 1744119924255,
+    "hash": "4a06fc7130b6b5d537d2e598481f78ab"
+  },
+  "_content/tour/concurrency/mutex-counter.go": {
+    "timestamp": 1744119927653,
+    "hash": "b353ffee005177f563dcc9fcb614516b"
+  },
+  "_content/tour/concurrency/range-and-close.go": {
+    "timestamp": 1744119931533,
+    "hash": "21badf0bf91e9655c17ee92894ff0d21"
+  },
+  "_content/tour/concurrency/select.go": {
+    "timestamp": 1744119934412,
+    "hash": "0913b1cabe0981bbcfccc09fab7ba97b"
+  },
+  "_content/tour/concurrency.article": {
+    "timestamp": 1744119969692,
+    "hash": "1efe2b3c009a3649519aec029191e3f6"
+  },
+  "_content/tour/flowcontrol/defer-multi.go": {
+    "timestamp": 1744119970593,
+    "hash": "9af1bba833ab11f7ffcc9f1cb2161ff6"
+  },
+  "_content/tour/flowcontrol/defer.go": {
+    "timestamp": 1744119973848,
+    "hash": "587f6a7fcf08642ea3a121f2b7b5a4ea"
+  },
+  "_content/tour/flowcontrol/exercise-loops-and-functions.go": {
+    "timestamp": 1744119977796,
+    "hash": "b3151d7214230aec371f399e04e159c1"
+  },
+  "_content/tour/flowcontrol/for-continued.go": {
+    "timestamp": 1744119980661,
+    "hash": "070d9378da9151486799ff483dd12adc"
+  },
+  "_content/tour/flowcontrol/for-is-gos-while.go": {
+    "timestamp": 1744119984050,
+    "hash": "1e9cab123fdfcdb4e804a7f03c9b64ed"
+  },
+  "_content/tour/flowcontrol/for.go": {
+    "timestamp": 0,
+    "hash": "633bd8133f527cb154a7ce94ec0ffab6"
+  },
+  "_content/tour/flowcontrol.article": {
+    "timestamp": 1744164896146,
+    "hash": "546f65566ae584f05f4526193e1961c0"
+  },
+  "_content/tour/generics.article": {
+    "timestamp": 1744164901982,
+    "hash": "79609536134a85311d77217824e9d85c"
+  },
+  "_content/tour/methods.article": {
+    "timestamp": 1744164928601,
+    "hash": "11a8c686b136b5c242aa58bae0a62206"
+  },
+  "_content/tour/moretypes.article": {
+    "timestamp": 1744164957423,
+    "hash": "2949f7e1e7279a19020565329d360074"
+  },
+  "_content/tour/solutions/README": {
+    "timestamp": 1744164958331,
+    "hash": "5da02395837ef3a1578d6f24fcb6cac7"
+  },
+  "_content/tour/static/css/app.css": {
+    "timestamp": 1744164961584,
+    "hash": "33a0d4b801c6ce3ff5384dba15c61d0c"
+  },
+  "_content/tour/static/js/app.js": {
+    "timestamp": 1744164964998,
+    "hash": "e3b64b2695af1c7289a2b6b69a513d58"
+  },
+  "_content/tour/static/js/controllers.js": {
+    "timestamp": 1744164968441,
+    "hash": "c916192ee17616c97ba8a20ea708cdd3"
+  },
+  "_content/tour/static/js/directives.js": {
+    "timestamp": 1744164990549,
+    "hash": "a8ba29492f79bab312faa954123c855a"
+  },
+  "_content/tour/static/js/page.js": {
+    "timestamp": 1744164994954,
+    "hash": "a516d241a0a9d7422877e721d8db480b"
+  },
+  "_content/tour/static/js/services.js": {
+    "timestamp": 1744164995679,
+    "hash": "9beec46fb733710ae7f0e0e596b3350e"
+  },
+  "_content/tour/static/js/values.js": {
+    "timestamp": 1744165021364,
+    "hash": "dc2d2b525e38d8d82485f0c2f4213822"
+  },
+  "_content/tour/static/lib/angular-ui.min.js": {
+    "timestamp": 1744165025641,
+    "hash": "b33f486ae57ed694809e6eaad880be82"
+  },
+  "_content/tour/static/lib/angular.min.js": {
+    "timestamp": 1744165029055,
+    "hash": "8ad990f7fa9c00d50c08864c558e236b"
+  },
+  "_content/tour/static/lib/codemirror/AUTHORS": {
+    "timestamp": 1744165032336,
+    "hash": "6bb6fd4d0e308249205b05b53e06ecba"
+  },
+  "_content/tour/static/lib/codemirror/LICENSE": {
+    "timestamp": 1744165038795,
+    "hash": "8554e1ee437cc3fb3cfee9ad4a11b8ab"
+  },
+  "_content/tour/static/lib/codemirror/README": {
+    "timestamp": 1744165043416,
+    "hash": "20b2021a37e43f24a7ffcabaa14459a6"
+  },
+  "_content/tour/static/lib/codemirror/lib/codemirror.css": {
+    "timestamp": 1744165044204,
+    "hash": "e4d51756a6e816efb0c8f0f5fcd62980"
+  },
+  "_content/tour/static/lib/codemirror/lib/codemirror.js": {
+    "timestamp": 0,
+    "hash": "a094aba82f0c6a6c2ced4c08e526b94d"
+  }
+}
